@@ -134,6 +134,10 @@ export class Result<T extends defined, E extends defined> {
 		return this.isOk() ? (this.okValue as T) : gen(this.errValue as E);
 	}
 
+	public unwrapOrError(): T {
+		return this.isOk() ? (this.okValue as T) : error(this.errValue as E);
+	}
+
 	public expectErr(msg: unknown): E | never {
 		if (this.isErr()) return this.errValue as E;
 		else throw msg;
