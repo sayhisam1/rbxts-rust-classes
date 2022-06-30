@@ -30,20 +30,20 @@ export class Result<T extends defined, E extends defined> {
 		return new Result<R, E>(undefined, val);
 	}
 
-	public static fromCallback<T extends defined>(c: () => T): Result<T, OptionType<defined>> {
+	public static fromCallback<T extends defined>(c: () => T): Result<T, defined> {
 		const [success, result] = pcall(c);
-		return success ? Result.ok(result as T) : Result.err(Option.wrap(result));
+		return success ? Result.ok(result as T) : Result.err(result);
 	}
 
-	public static fromVoidCallback(c: () => void): Result<UnitType, OptionType<defined>> {
+	public static fromVoidCallback(c: () => void): Result<UnitType, defined> {
 		const [success, result] = pcall(c);
-		return success ? Result.ok(unit()) : Result.err(Option.wrap(result!));
+		return success ? Result.ok(unit()) : Result.err(result!);
 	}
 
-	public static fromPromise<T extends defined>(p: Promise<T>): Promise<Result<T, OptionType<defined>>> {
+	public static fromPromise<T extends defined>(p: Promise<T>): Promise<Result<T, defined>> {
 		return p.then(
 			(v) => Result.ok(v),
-			(e) => Result.err(Option.wrap(e)),
+			(e) => Result.err(e),
 		);
 	}
 
